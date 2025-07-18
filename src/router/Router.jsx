@@ -27,6 +27,7 @@ import BecomeSeller from "../Pages/Dashboard/Customar/BecomeSeller";
 import AdminHomePage from "../Pages/Dashboard/Admin/AdminHomePage";
 import CatagoryPageDetails from "../Pages/Home/CatagoryPageDetails";
 import InvoicePage from "../Component/Cart/InvoicePage";
+import DefaultDashboard from "../Component/DefaultDashboard/DefaultDashboard";
 
 
 
@@ -103,6 +104,12 @@ const router = createBrowserRouter([
       <DashboardLayout></DashboardLayout>
     </PrivateRoute>,
     children: [
+      {
+        index: true,
+        element: <PrivateRoute>
+          <DefaultDashboard></DefaultDashboard>
+        </PrivateRoute>
+      },
       {
         path: '/dashboard/payment-history',
         element: <PrivateRoute>

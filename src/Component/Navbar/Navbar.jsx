@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FaShoppingCart } from 'react-icons/fa';
 import logoImg from '../../assets/vaccine logo.jpg'
 import { useLanguage } from '../../Context/LanguageContext';
-import { Link, NavLink } from 'react-router';
+import { Link, NavLink, useNavigate } from 'react-router';
 import useAuth from '../../hooks/useAuth';
 import { toast } from 'react-toastify';
 import { useCart } from '../../Context/CartContext';
@@ -12,6 +12,7 @@ const Navbar = () => {
     const { user, logOut } = useAuth();
     const [isOpen, setIsOpen] = useState(false);
     const { cartItems, clearCart } = useCart();
+    const navigate = useNavigate();
 
 
     const handleLogOut = () => {
@@ -19,6 +20,7 @@ const Navbar = () => {
         logOut().then(() => {
             clearCart();
             toast.success("Logout Succesfull!")
+            navigate('/')
         }).catch((error) => {
             toast.error("Logout failed!")
         });

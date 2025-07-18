@@ -5,8 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 
 const useRole = () => {
     const { user, loading } = useAuth();
-    // const [role, setRole] = useState(null);
-    // const [isRoleLoading, setIsRoleLoading] = useState(true);
+
     const axiosSucure = useAxiosSecure();
 
     const {data:role, isLoading:isRoleLoading} = useQuery({
@@ -18,27 +17,8 @@ const useRole = () => {
         }
         
     });
-    console.log(role, isRoleLoading)
+ 
 
-
-    // useEffect(() => {
-
-    //     const fetchUserRole = async () => {
-    //         if(!user) return setIsRoleLoading(false)
-    //         try {
-              
-    //             setRole(data?.role);
-                
-    //         }
-    //         catch(err){
-    //             console.log(err)
-    //         }
-    //         finally{
-    //             setIsRoleLoading(false)
-    //         }
-    //     }
-    //     fetchUserRole();
-    // }, [user, axiosSucure])
 
 
     return [role?.role, isRoleLoading]
