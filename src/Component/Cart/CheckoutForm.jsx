@@ -121,7 +121,7 @@ const CheckoutForm = ({ quantity,  grandTotal, item }) => {
             // update product quantity in db from plant collection
         }
 
-        console.log(result)
+       
     };
 
     return (

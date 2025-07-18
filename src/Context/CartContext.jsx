@@ -1,6 +1,7 @@
 import { createContext, useState, useContext, useEffect } from "react";
 import useAuth from "../hooks/useAuth";
 import axios from "axios";
+import { getAuth } from "firebase/auth";
 
 const CartContext = createContext();
 
@@ -8,10 +9,31 @@ export const CartProvider = ({ children }) => {
     const [cartItems, setCartItems] = useState([]);
     const { user } = useAuth();
 
+
+
+    const fetchCart = async (email) => {
+        try {
+            const auth = getAuth();
+            const currentUser = auth.currentUser;
+            if (!currentUser) return;
+
+            const token = await currentUser.getIdToken();
+
+            const res = await axios.get(`http://localhost:3000/cart/${email}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            setCartItems(res.data);
+        } catch (err) {
+            console.error("Failed to fetch cart:", err);
+        }
+    };
+
     useEffect(() => {
         if (user?.email) {
-            axios.get(`http://localhost:3000/cart/${user.email}`)
-                .then(res => setCartItems(res.data));
+            fetchCart(user.email);
         }
     }, [user]);
 
