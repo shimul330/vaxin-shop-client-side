@@ -3,6 +3,7 @@ import useAuth from "../hooks/useAuth";
 import axios from "axios";
 import { getAuth } from "firebase/auth";
 
+
 const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
@@ -11,15 +12,16 @@ export const CartProvider = ({ children }) => {
 
 
 
-    const fetchCart = async (email) => {
+    const fetchCart = async () => {
         try {
             const auth = getAuth();
             const currentUser = auth.currentUser;
+
             if (!currentUser) return;
 
             const token = await currentUser.getIdToken();
 
-            const res = await axios.get(`http://localhost:3000/cart/${email}`, {
+            const res = await axios.get(`http://localhost:3000/cart/${user.email}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -27,16 +29,32 @@ export const CartProvider = ({ children }) => {
 
             setCartItems(res.data);
         } catch (err) {
-            console.error("Failed to fetch cart:", err);
+            console.error('Failed to fetch cart:', err);
         }
     };
 
     useEffect(() => {
-        if (user?.email) {
-            fetchCart(user.email);
-        }
+        if (!user || !user.email) return;
+
+        console.log("Calling fetchCart for:", user.email);
+        fetchCart();
     }, [user]);
 
+
+    // useEffect(() => {
+    //     if (!user || !user.email) return; 
+
+    //     const fetchCart = async () => {
+    //         try {
+    //             const res = await axios.get(`http://localhost:3000/cart/${user.email}`);
+    //             setCartItems(res.data);
+    //         } catch (err) {
+    //             console.error('Failed to fetch cart:', err);
+    //         }
+    //     };
+
+    //     fetchCart();
+    // }, [user]);
     // CART ADD
     const addToCart = async (medicine) => {
         const { _id, ...rest } = medicine;
@@ -66,8 +84,11 @@ export const CartProvider = ({ children }) => {
     // CART DELETE
     const removeFromCart = async (id) => {
 
-        await axios.delete(`http://localhost:3000/cart/${id}`);
+        await axios.delete(`http://localhost:3000/cart/${id}`,)
+
         setCartItems(prev => prev.filter(item => item._id !== id));
+
+
     };
 
     return (

@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react'
 import useAxiosSecure, { axiosSecure } from '../hooks/useAxiosSecure';
 import { toast } from 'react-toastify';
+import { getAuth } from 'firebase/auth';
 
 
 
@@ -11,6 +12,7 @@ const UserUpdateRole = ({ isOpen, setIsOpen, role, userEmail }) => {
     const quaryClient = useQueryClient();
     const [updatedRole, setUpdatedRole] = useState(role);
     const axiosSecure = useAxiosSecure();
+    const auth = getAuth()
     
     function close() {
         setIsOpen(false)
@@ -18,7 +20,13 @@ const UserUpdateRole = ({ isOpen, setIsOpen, role, userEmail }) => {
 
     const mutation = useMutation({
         mutationFn: async (role)=>{
-            const {data} = await axiosSecure.patch(`/user/role/update/${userEmail}`, {role})
+            const currentUser = auth.currentUser;
+            const token = await currentUser.getIdToken();
+            const {data} = await axiosSecure.patch(`/user/role/update/${userEmail}`, {role}, {
+                headers:{
+                     Authorization: `Bearer ${token}`,
+                }
+            })
             return data;
         },
         onSuccess: data =>{

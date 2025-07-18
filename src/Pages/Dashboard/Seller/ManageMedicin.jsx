@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import { BounceLoader } from 'react-spinners';
+import { getAuth } from 'firebase/auth';
 
 const ManageMedicin = () => {
     const [showModal, setShowModal] = useState(false);
@@ -17,11 +18,18 @@ const ManageMedicin = () => {
     const { user } = useAuth();
     const axiosSecure = useAxiosSecure();
     const queryClient = useQueryClient();
+    const auth = getAuth();
 
     const { data: sellerMedicines , isLoading } = useQuery({
         queryKey: ['seller-medicines', user?.email],
         queryFn: async () => {
-            const res = await axiosSecure.get(`/medicines/seller/${user?.email}`);
+            const currentUser = auth.currentUser;
+            const token = await currentUser.getIdToken();
+            const res = await axiosSecure.get(`/medicines/seller/${user?.email}`,{
+                headers:{
+                    Authorization: `Bearer ${token}`,
+                }
+            });
             return res.data;
         },
         enabled: !!user?.email,

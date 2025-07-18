@@ -1,13 +1,21 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import { toast } from 'react-toastify';
+import { getAuth } from 'firebase/auth';
 const Table = ({ medicine, index, onEdit }) => {
     const axiosSecure = useAxiosSecure();
     const queryClient = useQueryClient();
+    const auth = getAuth();
 
     const deleteMedicineMutation = useMutation({
         mutationFn: async (id) => {
-            const res = await axiosSecure.delete(`/delete-medicine/${id}`);
+            const currentUser = auth.currentUser;
+            const token = await currentUser.getIdToken();
+            const res = await axiosSecure.delete(`/delete-medicine/${id}`,{
+                headers:{
+                    Authorization:`Bearer ${token}`,
+                }
+            });
             return res.data;
         },
         onSuccess: () => {

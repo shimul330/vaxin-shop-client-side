@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import { getAuth } from 'firebase/auth';
 
 const ManageCatagoryUpdate = ({ isOpen, setIsOpen, selectedCategory }) => {
 
@@ -12,6 +13,7 @@ const ManageCatagoryUpdate = ({ isOpen, setIsOpen, selectedCategory }) => {
     const [imageUrl, setImageUrl] = useState(null);
     const [uploading, setUploading] = useState(false);
      const queryClient = useQueryClient();
+     const auth = getAuth();
 
     // React hook form
     const { register, handleSubmit, reset, formState: { errors } } = useForm({
@@ -52,7 +54,13 @@ const ManageCatagoryUpdate = ({ isOpen, setIsOpen, selectedCategory }) => {
     // tanstask update 
     const updateCategoryMutation = useMutation({
         mutationFn: async (formData) => {
-            const res = await axiosSecure.patch(`/category/${selectedCategory?._id}`, formData)
+            const currentUser = auth.currentUser;
+            const token = await currentUser.getIdToken();
+            const res = await axiosSecure.patch(`/category/${selectedCategory?._id}`, formData,{
+                headers:{
+                     Authorization: `Bearer ${token}`,
+                }
+            })
             return res.data;
         },
         onSuccess: () => {

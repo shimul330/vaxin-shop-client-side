@@ -8,6 +8,7 @@ import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import { Document, Packer, Paragraph, TextRun } from "docx";
 import { FiDownload } from "react-icons/fi";
+import { getAuth } from 'firebase/auth';
 
 
 
@@ -15,12 +16,19 @@ import { FiDownload } from "react-icons/fi";
 
 const SelesReport = () => {
     const axiosSecure = useAxiosSecure();
+    const auth = getAuth();
 
 
     const { data: sales, isLoading } = useQuery({
         queryKey: ["sales-report"],
         queryFn: async () => {
-            const res = await axiosSecure.get('/sales');
+             const currentUser = auth.currentUser;
+            const token = await currentUser.getIdToken();
+            const res = await axiosSecure.get('/sales',{
+                headers:{
+                    Authorization:`Bearer ${token}`,
+                }
+            });
             return res.data;
         },
 

@@ -2,32 +2,37 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import { toast } from 'react-toastify';
+import { getAuth } from 'firebase/auth';
 
-const PaymentManagementTable = ({order}) => {
-    
+const PaymentManagementTable = ({ order }) => {
+
     const axiosSecure = useAxiosSecure();
     const queryClient = useQueryClient();
+    // const auth = getAuth();
 
     // payment stutus patch query
     const mutation = useMutation({
-        mutationFn: async(id)=>{
+        mutationFn: async (id) => {
+            // const currentUser = auth.currentUser;
+            // const token = await currentUser.getIdToken();
+
             const res = await axiosSecure.patch(`/order/payment-status/${id}`);
             return res.data
         },
         onSuccess: () => {
-        toast.success("Payment Accepted!");
-        queryClient.invalidateQueries(['orders']); 
-    }
+            toast.success("Payment Accepted!");
+            queryClient.invalidateQueries(['orders']);
+        }
     })
 
 
-    const handleUpdateStatus = (id)=>{
+    const handleUpdateStatus = (id) => {
         mutation.mutate(id)
     }
 
     return (
         <tr
-           
+
             className={`border-b ${order.paymentStatus === 'pending' ? 'bg-yellow-50' : 'bg-green-50'}`}
         >
             <td className="px-4 py-2 font-medium text-gray-800">{order?.customer?.email}</td>
@@ -42,7 +47,7 @@ const PaymentManagementTable = ({order}) => {
             </td>
             <td className="px-4 py-2">
                 {order.paymentStatus === 'pending' ? (
-                    <button onClick={()=>handleUpdateStatus(order?._id)} className="bg-green-500 hover:bg-green-600 text-white text-sm px-3 py-1 rounded-full shadow">
+                    <button onClick={() => handleUpdateStatus(order?._id)} className="bg-green-500 hover:bg-green-600 text-white text-sm px-3 py-1 rounded-full shadow">
                         ✅ Accept Payment
                     </button>
                 ) : (

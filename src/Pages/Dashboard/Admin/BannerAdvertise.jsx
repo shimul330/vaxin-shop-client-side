@@ -3,14 +3,22 @@ import { useQuery } from '@tanstack/react-query';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import BannerTable from '../../../Component/Dashboard/Admin/BannerTable';
 import { BounceLoader } from 'react-spinners';
+import { getAuth } from 'firebase/auth';
 
 const BannerAdvertise = () => {
     const axiosSecure = useAxiosSecure();
+    const auth = getAuth();
 
     const { data: ads, isLoading } = useQuery({
         queryKey: ['all-ads'],
         queryFn: async () => {
-            const res = await axiosSecure.get('/advertisements');
+            const currentUser = auth.currentUser;
+            const token = await currentUser.getIdToken();
+            const res = await axiosSecure.get('/advertisements',{
+                headers:{
+                    Authorization:`Bearer ${token}`,
+                }
+            });
             
             return res.data;
         }

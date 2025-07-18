@@ -3,26 +3,35 @@ import { useQuery } from '@tanstack/react-query';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import { BounceLoader } from 'react-spinners';
 import ManageUserTable from '../../../Component/Dashboard/Admin/ManageUserTable';
+import { getAuth } from 'firebase/auth';
 
 
 
 const ManageUsers = () => {
 
     const axiosSecure = useAxiosSecure();
+    const auth = getAuth();
 
-    const {data:users, isLoading} = useQuery({
-        queryKey:['users'],
-        queryFn: async ()=>{
-            const {data} = await axiosSecure('/all-user');
+    const { data: users, isLoading } = useQuery({
+        queryKey: ['users'],
+        queryFn: async () => {
+            const currentUser = auth.currentUser;
+            const token = await currentUser.getIdToken();
+
+            const { data } = await axiosSecure('/all-user', {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                }
+            });
             return data;
         }
-       
+
     });
-    
-    if(isLoading) return   <BounceLoader />
+
+    if (isLoading) return <BounceLoader />
     return (
         <div className='container mx-auto px-4 sm:px-8'>
-          
+
             <div className='py-8'>
                 <div className='-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto'>
                     <div className='inline-block min-w-full shadow rounded-lg overflow-hidden'>
@@ -58,15 +67,15 @@ const ManageUsers = () => {
                             </thead>
                             <tbody>
                                 {
-                                    users.map(user=> <ManageUserTable key={user?._id} user={user}></ManageUserTable> )
+                                    users.map(user => <ManageUserTable key={user?._id} user={user}></ManageUserTable>)
                                 }
                             </tbody>
-                            
+
                         </table>
                     </div>
                 </div>
             </div>
-            
+
         </div>
     );
 };

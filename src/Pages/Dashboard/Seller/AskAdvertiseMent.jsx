@@ -7,6 +7,7 @@ import AddAdvertisementModal from '../../../Component/Dashboard/Seller/AddAdvert
 import AskAdvertiseMentList from '../../../Component/Dashboard/Seller/AskAdvertiseMentList';
 import { useQuery } from '@tanstack/react-query';
 import { BounceLoader } from 'react-spinners';
+import { getAuth } from 'firebase/auth';
 
 
 const AskAdvertiseMent = () => {
@@ -14,12 +15,19 @@ const AskAdvertiseMent = () => {
 
     const axiosSecure = useAxiosSecure();
     const { user } = useAuth();
+    const auth = getAuth();
     const sellerEmail = user?.email;
 
     const { data: ads = [], isLoading } = useQuery({
         queryKey: ['ads', sellerEmail],
         queryFn: async () => {
-            const res = await axiosSecure.get(`/advertisements/${sellerEmail}`);
+             const currentUser = auth.currentUser;
+            const token = await currentUser.getIdToken();
+            const res = await axiosSecure.get(`/advertisements/${sellerEmail}`,{
+                headers:{
+                    Authorization:`Bearer ${token}`,
+                }
+            });
             return res.data;
         },
         enabled: !!sellerEmail, // wait for email to be available

@@ -6,7 +6,7 @@ import useAuth from '../../hooks/useAuth';
 
 const MedicineDetails = () => {
     const medicineData = useLoaderData();
-    console.log(medicineData)
+
     const { user } = useAuth();
 
     const {
@@ -32,11 +32,17 @@ const MedicineDetails = () => {
             <div className="flex flex-col md:flex-row gap-8">
                 {/* Image Section */}
                 <div className="md:w-1/2 flex justify-center items-center">
-                    <img
-                        src={image}
-                        alt={itemName}
-                        className="rounded-lg w-full max-h-[400px] object-cover"
-                    />
+                    {image ? (
+                        <img
+                            src={image}
+                            alt={itemName}
+                            className="rounded-lg w-full max-h-[400px] object-cover"
+                        />
+                    ) : (
+                        <div className="w-full h-[400px] flex items-center justify-center bg-gray-100 text-gray-500 rounded-lg">
+                            No Image Available
+                        </div>
+                    )}
                 </div>
 
                 {/* Details Section */}

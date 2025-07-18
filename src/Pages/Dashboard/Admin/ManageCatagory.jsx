@@ -4,18 +4,21 @@ import { useQuery } from '@tanstack/react-query';
 import { BounceLoader } from 'react-spinners';
 import ManageCatagoryTable from '../../../Component/Dashboard/Admin/ManageCatagoryTable';
 
+
 const ManageCatagory = () => {
-     const axiosSecure = useAxiosSecure();
-    const {data:medicines, isLoading} = useQuery({
-        queryKey:["medicines"],
-        queryFn: async()=>{
-             const {data} = await axiosSecure('/medicines');
-             return data;
+    const axiosSecure = useAxiosSecure();
+  
+    const { data: medicines, isLoading } = useQuery({
+        queryKey: ["medicines"],
+        queryFn: async () => {
+          
+            const { data } = await axiosSecure('/medicines');
+            return data;
         }
 
     })
 
-    if(isLoading) return   <BounceLoader />
+    if (isLoading) return <BounceLoader />
 
     return (
         <div className='container mx-auto px-4 sm:px-8'>
@@ -31,19 +34,19 @@ const ManageCatagory = () => {
                             <th>Item Name</th>
                             <th>Category Name</th>
                             <th>Actions</th>
-                            
-                               
-                            
+
+
+
                         </tr>
                     </thead>
                     <tbody>
                         {
-                            medicines.map((medicine, index)=> <ManageCatagoryTable key={medicine?._id} index={index} medicine={medicine}  ></ManageCatagoryTable>)
+                            medicines.map((medicine, index) => <ManageCatagoryTable key={medicine?._id} index={index} medicine={medicine}  ></ManageCatagoryTable>)
                         }
-                        
-                       
+
+
                     </tbody>
-               
+
                 </table>
             </div>
 

@@ -3,15 +3,23 @@ import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import { useQuery} from '@tanstack/react-query';
 import { BounceLoader } from 'react-spinners';
 import PaymentManagementTable from '../../../Component/Dashboard/Admin/PaymentManagementTable';
+import { getAuth } from 'firebase/auth';
 
 const PaymentManageMent = () => {
     const axiosSecure = useAxiosSecure();
+    const auth = getAuth();
    
 
     const { data: orders, isLoading } = useQuery({
         queryKey: ["orders"],
         queryFn: async () => {
-            const res = await axiosSecure("/orders");
+               const currentUser = auth.currentUser;
+            const token = await currentUser.getIdToken();
+            const res = await axiosSecure("/orders",{
+                headers:{
+                     Authorization: `Bearer ${token}`,
+                }
+            });
             return res.data;
         }
     })

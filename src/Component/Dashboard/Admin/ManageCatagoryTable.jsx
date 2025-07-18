@@ -3,6 +3,7 @@ import ManageCatagoryUpdate from './ManageCatagoryUpdate';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import { toast } from 'react-toastify';
+import { getAuth } from 'firebase/auth';
 
 const ManageCatagoryTable = ({ medicine, index }) => {
 
@@ -10,6 +11,7 @@ const ManageCatagoryTable = ({ medicine, index }) => {
     const [selectedCategory, setSelectedCategory] = useState(null);
     const axiosSecure = useAxiosSecure();
     const queryClient = useQueryClient();
+    const auth = getAuth();
 
     const handleUpdateClick = () => {
         setSelectedCategory(medicine);
@@ -19,7 +21,13 @@ const ManageCatagoryTable = ({ medicine, index }) => {
 
     const deleteCategoryMutation = useMutation({
         mutationFn: async (id) => {
-            const res = await axiosSecure.delete(`/category/${id}`)
+            const currentUser = auth.currentUser;
+            const token = await currentUser.getIdToken();
+            const res = await axiosSecure.delete(`/category/${id}`, {
+                headers:{
+                     Authorization: `Bearer ${token}`,
+                }
+            })
             return res.data;
         },
         onSuccess: (data) => {
