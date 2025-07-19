@@ -30,7 +30,7 @@ const UserUpdateRole = ({ isOpen, setIsOpen, role, userEmail }) => {
             return data;
         },
         onSuccess: data =>{
-            console.log(data)
+         
             toast.success("User role updated!")
             setIsOpen(false)
             //invalidate quary
@@ -38,7 +38,7 @@ const UserUpdateRole = ({ isOpen, setIsOpen, role, userEmail }) => {
 
         },
         onError: error =>{
-            console.log(error)
+          toast.error(error)
         }
     })
 

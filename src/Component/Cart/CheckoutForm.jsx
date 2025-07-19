@@ -59,12 +59,12 @@ const CheckoutForm = ({ quantity,  grandTotal, item }) => {
         });
 
         if (error) {
-            console.log('[error]', error);
+     
             setError(error.message)
             setProcessing(false)
             return
         } else {
-            console.log('[PaymentMethod]', paymentMethod);
+        
             setError(null)
         }
         // taka pay
@@ -111,7 +111,7 @@ const CheckoutForm = ({ quantity,  grandTotal, item }) => {
 
             }
             catch (err) {
-                console.log(err)
+               toast.error(err)
             }
             finally {
                 setProcessing(false)

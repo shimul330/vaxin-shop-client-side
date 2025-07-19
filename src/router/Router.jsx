@@ -46,12 +46,12 @@ const router = createBrowserRouter([
       {
         path: 'shop',
         Component: Shop,
-        loader: () => fetch('http://localhost:3000/medicines')
+        loader: () => fetch('https://vaxin-website-server-side.vercel.app/medicines')
       },
       {
         path: '/medicines/:id',
         Component: MedicineDetails,
-        loader: ({ params }) => fetch(`http://localhost:3000/medicines/${params.id}`)
+        loader: ({ params }) => fetch(`https://vaxin-website-server-side.vercel.app/medicines/${params.id}`)
 
       },
       {

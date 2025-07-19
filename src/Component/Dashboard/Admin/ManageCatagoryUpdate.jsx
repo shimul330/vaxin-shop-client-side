@@ -74,7 +74,7 @@ const ManageCatagoryUpdate = ({ isOpen, setIsOpen, selectedCategory }) => {
             toast.error("Failed to update category");
         }
     })
-    console.log(updateCategoryMutation)
+    
 
     //image and catagory catch
     const onSubmit = (data) => {

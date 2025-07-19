@@ -56,13 +56,13 @@ const ManageMedicin = () => {
                 createdAt: new Date(),
             };
 
-            const res = await axios.post('http://localhost:3000/add-medicine', medicineData);
+            const res = await axios.post('https://vaxin-website-server-side.vercel.app/add-medicine', medicineData);
             toast.success("Medicine added successfully!");
             reset();
             setShowModal(false);
             queryClient.invalidateQueries(['seller-medicines', user?.email]);
         } catch (err) {
-            console.log(err);
+            toast.error(err)
         } finally {
             setIsUploading(false);
         }

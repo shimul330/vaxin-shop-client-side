@@ -25,7 +25,7 @@ const Register = () => {
                     created_at: new Date().toISOString(),
                     last_log_in: new Date().toISOString()
                 };
-                await axios.post('http://localhost:3000/users', userInfo);
+                await axios.post('https://vaxin-website-server-side.vercel.app/users', userInfo);
 
                 // 2. Update Firebase profile
                 const userProfile = {
@@ -54,7 +54,7 @@ const Register = () => {
 
         const res = await axios.post(imageUploadUrl, formData)
 
-       console.log(res.data.data.url);
+    
         setprofilePic(res.data.data.url);
 
     }

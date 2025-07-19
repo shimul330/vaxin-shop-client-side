@@ -2,6 +2,7 @@ import { createContext, useState, useContext, useEffect } from "react";
 import useAuth from "../hooks/useAuth";
 import axios from "axios";
 import { getAuth } from "firebase/auth";
+import { toast } from "react-toastify";
 
 
 const CartContext = createContext();
@@ -21,7 +22,7 @@ export const CartProvider = ({ children }) => {
 
             const token = await currentUser.getIdToken();
 
-            const res = await axios.get(`http://localhost:3000/cart/${user.email}`, {
+            const res = await axios.get(`https://vaxin-website-server-side.vercel.app/cart/${user.email}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -36,7 +37,7 @@ export const CartProvider = ({ children }) => {
     useEffect(() => {
         if (!user || !user.email) return;
 
-        console.log("Calling fetchCart for:", user.email);
+ 
         fetchCart();
     }, [user]);
 
@@ -46,7 +47,7 @@ export const CartProvider = ({ children }) => {
 
     //     const fetchCart = async () => {
     //         try {
-    //             const res = await axios.get(`http://localhost:3000/cart/${user.email}`);
+    //             const res = await axios.get(`https://vaxin-website-server-side.vercel.app/cart/${user.email}`);
     //             setCartItems(res.data);
     //         } catch (err) {
     //             console.error('Failed to fetch cart:', err);
@@ -65,14 +66,14 @@ export const CartProvider = ({ children }) => {
         };
 
         try {
-            const res = await axios.post('http://localhost:3000/cart', item);
+            const res = await axios.post('https://vaxin-website-server-side.vercel.app/cart', item);
 
             if (res.data.insertedId) {
-                const updated = await axios.get(`http://localhost:3000/cart/${user.email}`);
+                const updated = await axios.get(`https://vaxin-website-server-side.vercel.app/cart/${user.email}`);
                 setCartItems(updated.data);
             }
         } catch (err) {
-            console.log(err);
+            toast.error(err)
         }
     };
 
@@ -84,7 +85,7 @@ export const CartProvider = ({ children }) => {
     // CART DELETE
     const removeFromCart = async (id) => {
 
-        await axios.delete(`http://localhost:3000/cart/${id}`,)
+        await axios.delete(`https://vaxin-website-server-side.vercel.app/cart/${id}`,)
 
         setCartItems(prev => prev.filter(item => item._id !== id));
 

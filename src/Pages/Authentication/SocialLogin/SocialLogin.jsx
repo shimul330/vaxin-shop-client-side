@@ -22,8 +22,8 @@ const SocialLogin = () => {
                     last_log_in: new Date().toISOString()
                 }
 
-                const res = await axios.post('http://localhost:3000/users', userInfo)
-                console.log(res.data)
+                const res = await axios.post('https://vaxin-website-server-side.vercel.app/users', userInfo)
+      
 
                 navigate(from)
 

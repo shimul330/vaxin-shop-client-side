@@ -5,6 +5,7 @@ import useAxiosSecure from '../../hooks/useAxiosSecure';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import InvoiceDocument from './InvoiceDocument';
 import { getAuth } from 'firebase/auth';
+import { toast } from 'react-toastify';
 
 
 const InvoicePage = () => {
@@ -29,7 +30,7 @@ const InvoicePage = () => {
         return res.data;
       }
       catch (err) {
-        console.log(err)
+        toast.error(err)
       }
     }
 

@@ -12,7 +12,7 @@ const CheckoutPage = () => {
     const { user } = useAuth();
     const location = useLocation();
     const { item, quantity,  grandTotal, } = location.state || {};
-    // console.log(user)
+
     return (
         <div className="max-w-md mx-auto mb-10 mt-10 p-4 bg-white shadow-lg rounded-lg">
             <h2 className="text-2xl font-bold mb-4">Checkout Page</h2>

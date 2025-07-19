@@ -2,7 +2,7 @@ import React from 'react';
 import AdvertiseMentTable from './AdvertiseMentTable';
 
 const AskAdvertiseMentList = ({ads}) => {
-    console.log(ads)
+
     return (
         <div className="overflow-x-auto rounded-lg shadow-lg border border-gray-200">
             <table className="min-w-full bg-white divide-y divide-gray-200">

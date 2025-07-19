@@ -18,7 +18,7 @@ const BecomeSellerModal = ({ isOpen, setIsOpen, userEmail }) => {
 
         },
         onSuccess: (data) => {
-            console.log(data)
+          
             toast.success("Seller request sent successfully!");
             close();
         },
