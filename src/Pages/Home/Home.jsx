@@ -4,9 +4,12 @@ import CatagoryCardSection from './CatagoryCardSection';
 import DiscountSlider from './DiscountSlider';
 import CounterSection from './CounterSection';
 
+
 const Home = () => {
+
     return (
         <div>
+     
             <div className='mt-5 mb-5'>
                 <Banner></Banner>
                 <div className='mt-5'>

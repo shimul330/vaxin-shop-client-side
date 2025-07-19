@@ -10,6 +10,7 @@ import { ToastContainer } from 'react-toastify'
 import { CartProvider } from './Context/CartContext.jsx'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
+
 const queryClient = new QueryClient()
 
 createRoot(document.getElementById('root')).render(
@@ -19,9 +20,8 @@ createRoot(document.getElementById('root')).render(
         <div className='font-roboto'>
           <AuthProvider>
             <CartProvider>
-
-              <RouterProvider router={router}></RouterProvider>
-              <ToastContainer
+                <RouterProvider router={router}></RouterProvider>
+                 <ToastContainer
                 position="top-right"
                 autoClose={2000}
                 hideProgressBar={false}
@@ -33,6 +33,8 @@ createRoot(document.getElementById('root')).render(
                 pauseOnHover
                 theme="light"
               ></ToastContainer>
+              
+             
 
             </CartProvider>
           </AuthProvider>

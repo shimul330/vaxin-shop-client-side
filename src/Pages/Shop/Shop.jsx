@@ -4,11 +4,13 @@ import ShopTable from './ShopTable';
 import useRole from '../../hooks/useRole';
 import { BounceLoader } from 'react-spinners';
 
+
 const Shop = () => {
     const medicines = useLoaderData();
     const [role, isRoleLoading] = useRole();
     const [searchText, setSearchText] = useState("");
     const [sortOrder, setSortOrder] = useState("");
+
 
     const medicinesData = medicines.filter(medicine => {
         const search = searchText.toLowerCase();
@@ -40,6 +42,7 @@ const Shop = () => {
     return (
         <div className='py-3'>
             {/*  Search and Sort */}
+        
             <div className="flex flex-col md:flex-row gap-4 justify-end mb-7 mt-3 px-4">
                 <div className="relative w-full md:w-1/3">
                     <span className="absolute inset-y-0 left-0 pl-3 flex items-center">

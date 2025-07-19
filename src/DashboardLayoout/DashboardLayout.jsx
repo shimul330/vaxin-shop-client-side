@@ -8,9 +8,11 @@ import AdminMenu from '../Component/Dashboard/Sidevar/Menu/AdminMenu';
 import useRole from '../hooks/useRole';
 import { BounceLoader } from 'react-spinners';
 
+
 const DashboardLayout = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [role, isRoleLoading] = useRole();
+  
 
     if (isRoleLoading) return <BounceLoader />
 
