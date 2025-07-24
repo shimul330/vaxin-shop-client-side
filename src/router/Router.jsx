@@ -28,6 +28,7 @@ import AdminHomePage from "../Pages/Dashboard/Admin/AdminHomePage";
 import CatagoryPageDetails from "../Pages/Home/CatagoryPageDetails";
 import InvoicePage from "../Component/Cart/InvoicePage";
 import DefaultDashboard from "../Component/DefaultDashboard/DefaultDashboard";
+import ErrorPage from "../Component/ErrorPage/ErrorPage";
 
 
 
@@ -37,6 +38,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <MainLayout></MainLayout>,
+    errorElement: <ErrorPage></ErrorPage>,
     children: [
       {
         index: true,
